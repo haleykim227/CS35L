@@ -1,0 +1,58 @@
+Content-Type: text/enriched
+Text-Width: 70
+
+Haley Kim
+405111152
+CS35L
+Section 5
+Assignment 3
+
+<bold>Q1: Does the patch improve the performance of ls or make it worse? Briefly explain.</bold>
+
+
+The patch removes an if statement with the following lines:
+      	  --- a/src/ls.c
+	  +++ b/src/ls.c
+	  @@ -1903,8 +1903,7 @@ decode_switches (int argc, char **argv)
+             	break;
+          case 'A':
+-               if (ignore_mode == IGNORE_DEFAULT)
+-            	   ignore_mode = IGNORE_DOT_AND_DOTDOT;
++          	ignore_mode = IGNORE_DOT_AND_DOTDOT;
+		break;
+As there are now less instructions for ls to follow, the execution time is reduced. Apart from the improvement of execution time, the patch also now ensures that -a does not override -A which is a qualitative improvement.
+     
+<bold>Q2: If your company adopts this patched version of Coreutils instead of the default one, what else should you watch out for? Might this new version of Coreutils introduce other problems with your application?</bold>
+
+
+Now, the company must be aware of the difference the order of flags make. While previously, <bold>ls -aA </bold>and <bold>ls -Aa </bold>produced the same result, after the patch, they will produce different results. Also, sine we have modified a core function, if the company has written any shell scripts reliant on the output of ls, this may now cause issues with those scripts.
+
+
+<bold>Q3: What happens when this script is invoked on an empty file like /dev/null, and why?</bold>
+
+
+I received the following error:
+
+  	   IndexError: list index out of range
+
+	   This error occurs because there are no lines for the script to get. The program treats each line as as elements for a list.
+
+
+<bold>Q4. What happens when this script is invoked with Python 3 rather than Python 2, and why? (You can run Python 3 on the SEASnet hosts by using the command python3 instead of python.)</bold>
+
+
+I received the following error:
+
+  	     File "randline.py", line 65
+    	     except IOError as (errno, strerror):
+                     	       ^
+             SyntaxError: invalid syntax
+Python 2 exceptions are iterable, and you can iterate over parameters passed to the exception. Python 3 does not support tuples in error statements. This leads to the error of "invalid syntax."
+
+
+<bold>Q5. <bold>What happens when your shuf.py script is invoked with Python 2 rather than Python 3, and why?</bold>
+
+
+<x-bg-color><param>unspecified-bg</param><x-color><param>unspecified-fg</param>shuf.py seems to work fine when invoked with python2 rather than python3. This is because we have not used any python3 specific functions in shuf.py, and python2 can still understand every line of the script.
+
+</x-color></x-bg-color></bold>

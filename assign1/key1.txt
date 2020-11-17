@@ -1,0 +1,109 @@
+Haley Kim
+405111152
+CS35L Lab 8
+Assignment 1
+
+1.1
+ 
+1. emacs exer1.html
+ 
+2. C-s H T M L Enter
+ 
+3. C-s s c Enter M-left
+ 
+4. C-s s e Enter M-left
+ 
+5. C-s a r r o w Enter M-left
+ 
+6. C-e
+ 
+7. C-a
+ 
+8. C-e and C-a
+ 
+9. No
+ 
+10. C-x C-c y
+ 
+1.2
+ 
+1. emacs exer2.html
+ 
+2. C-u 19 C-n C-k
+ 
+3. C-s D E Enter C-a C-k
+ 
+4. C-s w i k Enter C-a C-k
+ 
+5. C-s < ! Enter Backspace Backspace C-f C-f C-f C-f Backspace Backspace Backspace Backspace C-f Backspace C-n C-a C-k C-n C-k C-n C-k C-n C-k C-s < ! Enter C-a C-k 
+ 
+1.3
+ 
+1. emacs exer3.html
+ 
+2. M-% A s s i g n m e n t SP 1 Enter A s s i g n m e n t SP 4 2 Enter y y C-g 
+ 
+3. M-< M-% U T F - 8 Enter U S - A S C I I Enter y C-g 
+ 
+4. M-< C-M-s [ ^ [ : a s c i i : ] ] C-a C-k
+ 
+5. M-< C-s < / o Enter C-a C-n Enter 
+ 
+6. C-x C-c y 
+ 
+1.4
+ 
+1. cat exer2.html exer2.diff >exer4.html
+ 
+2. emacs exer4.html
+ 
+3. 
+ 
+4. C-s < ! - Enter C-a C-@ C-n C-n C-e C-w M-< C-s L a Enter C-n C-n C-y C-a C-f Backspace C-n C-s < ! Enter C-a C-@ C-e C-w M-< C-s H o Enter C-n C-n C-y C-a C-f Backspace C-n C-s < ! Enter C-a C-@ C-n C-n C-e C-w M-< C-s S u Enter C-n C-n C-y C-n C-n Backspace Backspace C-p C-p C-a C-f Backspace C-n C-s < ! Enter C-b C-b C-@ C-f C-f C-f C-f C-f C-f C-f C-w M-< C-s s h o u l d SP o Enter C-right C-y C-s < ! Enter C-a C-@ C-n C-n C-n C-e C-w M-< C-s n o t h Enter C-n C-y C-n C-n Backspace Backspace C-s < ! Enter C-a C-@ C-e C-w M-< C-s I d Enter C-n C-n C-n C-n C-n C-n C-n C-y C-a C-f Backspace 
+ 
+5. C-n C-@ M-> C-w
+
+6. C---/  
+  
+7. - - > M-< C-s + + + Enter C-p C-a < ! - -  
+  
+8. M-< M-% < o l > Enter < o L > y y y y y y y
+   I found 7 instances.
+ 
+9. Checked
+ 
+1.5
+ 
+1. emacs C-x d + j u n k Enter C-x C-c
+ 
+2. emacs C-x d j u n k Enter C-x C-f h e l l o . c Enter C-x C-c
+ 
+3. emacs C-x d M-x compile Backspace Backspace h e l l o Enter C-x C-c
+ 
+4. C-x b h e l l o - o u t Enter C-u M-! . / h e l l o
+ 
+5. The return value is: EOF on input 
+ 
+1.6
+ 
+1. C-x b Enter
+ 
+2. ( r a n d o m " 4 0 5 - 1 1 1 - 1 5 2 " ) C-j value: -1186477441171808757
+ 
+3. ( s e t q SP x SP  ( r a n d o m ) ) C-j value: 740083701405540070 ( s e t q SP y SP  ( r a n d o m ) ) C-j value: 255016639802662013
+ 
+4. ( * SP x SP y ) C-j value: 1288209216983925170
+ 
+5. M-: ( * SP x SP y ) C-j Same result as before, but now in decimal, octadecimal, and hexadecimal forms.
+ 
+6. Since there are contributing factors such as the size limit to the integer due to setq, time, memory, and seed, etc, these cannot be truly random numbers. These are pseudo-random numbers.
+ 
+7. The probability is nearly 100%. 
+Assume the range of possible positive values is n, the first number multiplied is x, and the second number multiplied is y. 
+We know that the value will over flow if the product exceeds n.		
+Set x = 2. There is a 1/n probability that x = 2. If x = 2, then 1/2 of all possible values for y will cause x * y to overflow, and the probability that this case creates an overflow is 1/n * 1/2.
+Set x = 3. There is again a 1/n probability that x = 3. If x = 3, then 2/3 of all possible values will cause y to overflow, and the probability that this case creates an overflow is 1/n * 2/3.
+It is evident that the probability for an overflow given an arbitrary x value is 1/n * (x-1)/x. Summing all the probabilities and distributing the 1/n gives us:		
+1/n * (1/2 + 2/3 + 3/4 + ... n-2/n-1 + n-1/n). 
+For a large enough n, such as in the case of this problem, this sequence converges on 1 as n approaches infinity. The same holds for the negative half of the range, and we can therefore draw the same conclusion.
+Therefore probability that two truly random numbers will overflow and create a mathematically incorrect answer when multiplied together is close to 100%.

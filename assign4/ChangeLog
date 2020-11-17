@@ -1,0 +1,5 @@
+2020-02-08  Haley Kim  <haleykim@g.ucla.edu>
+
+	* lib/timespec.h: fixed overflow bug
+	* Used comparison instead of substituion.
+

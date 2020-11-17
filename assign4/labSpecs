@@ -1,0 +1,21 @@
+Haley Kim
+405111152
+CS35L
+Section 8
+Assignment 4
+
+Specs Summary
+
+- lab4.txt == lab notebook, record everything
+- maintaining an old version of coreutils, bug in the ls program
+- bug: ls -t mishandles very old timestamps, considers them future files
+- build the old version as-is
+- build it again with a patch
+- what problems while building as-is?
+- why did the renaming patch fix it?
+- reproduce the problem
+- use a debugger to figure out what went wrong
+- fix the corresponding source file
+- construct new patch file lab4.diff containing coreutil files in form of ChangeLog entry followed by diff -u patch
+- try and reproduce the problem on a seasnet directory, not tmp
+- run test case using already installed touch and ls instead of old coreutils -- how well does seasnet do?

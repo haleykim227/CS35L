@@ -1,0 +1,70 @@
+Haley Kim
+405111152
+CS35L
+Section 8
+Assignment 8
+
+Lab 8
+
+1.
+
+I ran "cd ~eggert/src/gnu/emacs-CS-35L"
+Then I ran "du -sh" on the directory, which gave me the disk usage of this directory in a quantifiable number. The result was 509MB.
+Then I ran "du -sh .git" to do the same thing but only for the .git/ directory. The result was 350MB.
+The files that comsumed most of the repository space were .git/objects/pack(335M), .git/objects(342MB), and .git(350M) itself. These files consume the most space because the objects are copied across when a repository is cloned, and the object files require a large amount of space.
+
+2.
+
+To find local branches, I ran "git branch | wc -l", "git branch" being the command to figure out all the local branches, and pipelining that output to "wc -l" to count the number of lines, since the result is one branch per line. This gave me 176.
+To find remote branches, I ran "git branch -r | wc -l", "git branch -r" being the command to figure out all the remote branches, and using the same pipeline for line count. This gave me 177.
+
+3.
+
+I ran "git remote -v" to list all the remote repositories and their links, which gave me the output:
+
+	origin	https://git.savannah.gnu.org/git/emacs.git (fetch)
+	origin	https://git.savannah.gnu.org/git/emacs.git (push)
+
+4. 
+
+I ran "git for-each-ref --sort=-committerdate refs/heads/ --format='%(committerdate:short) %(refname:short)'".
+
+2019-11-25 master
+2019-11-20 scratch/joaot/make-completion-at-point-function
+2019-11-18 feature/windows-with-utils
+2019-11-16 scratch/completion-api
+2019-11-10 scratch/a-modest-completion-redesign-proposal
+2019-11-05 scratch/fido-mode
+2019-11-03 feature/gnus-select2
+2019-10-14 feature/extend_face_id
+2019-10-10 scratch/jit-lock-antiblink-cleaned-up
+2019-10-07 emacs-26
+
+These are the 10 local branches most recently committed to.
+
+5.
+
+Ran "git status" to see where the HEAD is, said I was on branch master. Then ran "git rev-list --count HEAD" to find out how many commits there are in this branch. 139583 commits.
+
+6.
+
+Ran "git rev-list --all --count" to see the number of commits regardless of branch. There are 143910 total commits. 139583 out of 143910 total commits are in the master branch. 96.99% of all commits are also in the master branch.
+
+7. 
+
+I ran "git shortlog -s -n --since=01.01.2013".
+
+  3691  Eli Zaretskii
+  3644  Glenn Morris
+  3604  Paul Eggert
+  1806  Lars Ingebrigtsen
+  1784  Stefan Monnier
+  1571  Michael Albinus
+   619  Dmitry Gutov
+   576  Noam Postavsky
+   471  Alan Mackenzie
+   469  Juri Linkov
+
+These ten people authored the most master-branch commits since the year 2013 or later, and the numbers in front of the names indicate how many commits each of them made.
+
+8. 

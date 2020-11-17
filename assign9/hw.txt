@@ -1,0 +1,11 @@
+Haley Kim
+405111152
+CS35L
+Section 8
+Assignment 9
+
+Homework Answers
+
+1. Your resulting network is still secure because I have a private key that is only on my laptop even if all the other teams have been observing all the bytes going across the network. If they had tapped my keyboard after I had completed my client-server setup, they would now maybe have my passphrase, but I would still be safe because they do not have my private key. If I am booting off a USB and the teams had access to my USB, it could go two ways. One, my private key would be passphrase protected, and they would still not be able to replicate my connection. Two, my private key would not be passphrase protected, and now they will have full access to my account.
+
+2. the gpg —verify command does not really verify that I personally created the file in question. This is because the gpg —verify only checks if the signature matches the data and public key. Someone could snatch all three while it is in the air, swap the data with their data, swap the signature (since the signature is made off of the public key), and send the swapped versions of the files to the other computer to verify. This verification would still result as legitimate, even though it is neither the data nor the signature that I sent. You could fix this maybe by sending data that is encoded using your own private key, since the server side should have a matching public key as yours.

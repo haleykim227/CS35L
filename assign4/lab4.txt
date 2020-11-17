@@ -1,0 +1,115 @@
+Haley Kim
+405111152
+CS35L
+Section 8
+Assignment 4
+Lab 4 Log
+
+1. downloaded "coreutils-with-bug" from link onto local machine
+2. used "sftp" to put tar.gz file onto seasnet account
+3. used "tar -xvzf corutils-with-bug.tar.gz" to unzip file
+4. "cd"-ed into the unzipped "coreutils-with-bug" file
+5. ran "./configure --prefix=$HOME/lab4coreutils" with no errors (lab4coreutils already created in home directory)
+6. ran "make" inside "~/cs35l/assign4/coreutils-with-bug"
+7. faced errors such as:
+
+   	 In file included from utimecmp.c:41:0:
+	 utimens.h:2:5: error: conflicting types for 'futimens'
+	 int futimens (int, char const *, struct timespec const [2]);
+     	     ^
+	 In file included from utimecmp.h:25:0,
+                 	  from utimecmp.c:25:
+	 /usr/include/sys/stat.h:373:12: note: previous declaration of 'futimens' was here
+	  extern int futimens (int __fd, const struct timespec __times[2]) __THROW;
+
+	  make[3]: *** [utimecmp.o] Error 1
+	  make[3]: Leaving directory `/w/home.02/cs/ugrad/seungwon/cs35l/assign4/coreutils-with-bug/lib'
+	  make[2]: *** [all] Error 2
+	  make[2]: Leaving directory `/w/home.02/cs/ugrad/seungwon/cs35l/assign4/coreutils-with-bug/lib'
+	  make[1]: *** [all-recursive] Error 1
+	  make[1]: Leaving directory `/w/home.02/cs/ugrad/seungwon/cs35l/assign4/coreutils-with-bug'
+	  make: *** [all] Error 2
+
+8. ran "make install", produced similar errors
+9. ~/lab4coreutils folder empty, nothing installed
+10. created patch_file_lib containing the contents of the renaming patch that edits anything in lib/
+11. created patch_file_src containing the contents of the renaming patch that edits anything in src/
+12. used "patch -p1 < patch_file_lib" inside coreutils-with-bug/lib
+13. used "patch -p1 < patch_file_src" inside coreutils-with-bug/src
+14. I now realize that this could've been done with one file if I had used "-p0"
+15. the patch fixes the previous issues by changing the function name to "coreutils_futimens", making the function names different and hence eliminating the errors
+16. to reproduce the problem, I created a "reproduce.sh" file with the following contents:
+
+       #!/bin/bash                                                                    
+
+       tmp=$(mktemp -d)
+       cd $tmp
+       touch -d '1918-11-11 11:00 GMT' wwi-armistice-cs35L
+       touch now
+       sleep 1
+       touch now1
+       TZ=UTC0 ~/cs35l/assign4/lab4coreutils/bin/ls -lt --full-time wwi-armistice-cs35L now now1
+       cd ~/cs35l/assign4
+       rm -rf $tmp
+
+17. could not run reproduce.sh because of ownership, ran "chmod 744 reproduce.sh" to make it executable by me
+18. running "reproduce.sh" produces:
+
+    	    -rw-r--r-- 1 seungwon csugrad 0 1918-11-11 11:00:00.000000000 +0000 wwi-armistice-cs35L
+	    -rw-r--r-- 1 seungwon csugrad 0 2020-02-05 06:05:08.539635392 +0000 now1
+	    -rw-r--r-- 1 seungwon csugrad 0 2020-02-05 06:05:07.506596919 +0000 now
+
+
+	    which is identical to what the spec shows
+
+19. now I ran those commands in the "reproduce.sh" without the rm -rf $tmp line, so that the files wwi-armistice-cs35L, now, and now1 are not deleted
+20. echo $tmp gave me /tmp/tmp.GJC1Q2aTi5
+21. cd /tmp/tmp.GJC1Q2aTi5
+22. from inside /tmp/tmp.GJC1Q2aTi5, ran "gdb ~/cs35l/assign4/lab4coreutils/bin/ls"
+23. ran "info functions" to list the functions in ls.c
+24. "break compare_mtime" since ls -t seems to have a problem with comparing mtimes
+25. "run -lt" to run it with the -l and -t flags
+26. "s" to step through each instruction
+
+    	static int compare_mtime (V a, V b) { return cmp_mtime (a, b, xstrcoll); }
+	diff = a.tv_sec - b.tv_sec;
+	return diff ? diff : a.tv_nsec - b.tv_nsec;
+
+27. if b.tv_nsec is too high, the difference may cause an integer overflow, giving us a positive diff instead of a negative one
+28. copied $HOME/cs35l/assign4/coreutils-with-bug/lib/timespec.h into $HOME/cs35l/assign4/timespec.h
+29. edited the function in question from:
+    	   timespec_cmp (struct timespec a, struct timespec b)
+	   {
+		int diff = a.tv_sec - b.tv_sec;
+		return diff ? diff : a.tv_nsec - b.tv_nsec;
+	   }
+
+	   to
+
+	   timespec_cmp (struct timespec a, struct timespec b)
+	   {
+		return a.tv_sec > b.tv_sec ? 1 : (a.tv_sec < b.tv_sec ?
+                                           -1 : a.tv_nsec - b.tv_nsec);
+	   }
+
+30. now $HOME/cs35l/assign4/coreutils-with-bug/lib/timespec.h is the same, but $HOME/cs35l/assign4/timespec.h is changed
+31. "diff -u $HOME/cs35l/assign4/coreutils-with-bug/lib/timespec.h $HOME/cs35\
+l/assign4/timespec.h > my_patch.diff"
+32. "emacs" "C-x 4 a" ==> create ChangeLog ==> write contents ==> "C-x C-c"
+33. "cat ChangeLog my_patch.diff > lab4.diff"
+34. edit contents of lab4.diff so that +++ and --- are both followed by coreutils-with-bug/lib/timespec.h
+35. from $HOME/cs35l/assign4, "patch -p0 < lab4.diff"
+36. $HOME/cs35l/assign4/coreutils-with-bug/lib/timespec.h has been successfully patched
+37. "./configure --prefix=$HOME/cs35l/assign4/lab4coreutils"
+38. "make"
+39. "make install"
+40. run "./reproduce.sh" again
+
+    	-rw-r--r-- 1 seungwon csugrad 0 2020-02-08 22:46:35.514067085 +0000 now1
+	-rw-r--r-- 1 seungwon csugrad 0 2020-02-08 22:46:34.512029601 +0000 now
+	-rw-r--r-- 1 seungwon csugrad 0 1918-11-11 11:00:00.000000000 +0000 wwi-armistice-cs35L
+
+41. the bug has been successfully fixed
+42. tried rerunning in home directory:
+
+    	  it did not work, showed up as 2054. while the temp directory is 62-bit, the home directory is 32-bit, and there must be some sort of overflow that occurs here again.

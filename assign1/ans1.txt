@@ -1,0 +1,103 @@
+Haley Kim
+405111152
+CS35L Lab 8
+Assignment 1
+
+1.
+	apropos
+	I tried "man man" and read through parts of the manual.
+
+2.   	/usr/local/cs/bin/mv
+	/usr/bin/sh
+	commands used:
+	which mv
+	which sh
+ 
+3. 
+	./tr
+	translates or deletes characters
+	./ar
+	creates, modifies, and extracts from archives
+	./pr
+	converts text files for printing
+	commands used:
+	find /usr/bin -executable -name "?r"
+ 
+4. 
+	/usr/bin/emacs-24.3
+	commands used:
+	readlink /usr/bin/emacs
+	readlink /etc/alternatives/emacs	
+ 
+5. 
+	/usr/bin/gcc version 4.8.5
+	plain gcc version 9.2.0
+	Because they are made by different distributors,
+	the GNU Project and Red Hat Enterprise.
+ 
+6. 
+	u+sx gives the owner the power to set user or group ID on execution.
+	o-w takes away the power to write from users not in the group.
+ 
+7. 
+	find /usr/local/cs -type d -mtime -28
+	first 5 files listed:
+	/usr/local/cs
+	/usr/local/cs/src/bison
+	/usr/local/cs/src/bison/RCS
+	/usr/local/cs/src/gnuplot
+	/usr/local/cs/src/gnuplot/RCS
+ 
+8. 
+	292
+	commands used:
+	which find
+	cd /usr/bin
+	find /usr/bin -type l | wc -l
+9.
+	
+	./libavc1394.so.0.3.0 Last Modified 2013-12-28+02:54:15
+	commands used:
+	find -maxdepth 1 -type f -printf '%T+%p\n' | sort -r
+
+10.
+	/usr/lib/locale/locale-archive
+              Usual default locale archive location.
+       	/usr/share/i18n/locales
+              Usual default path for locale definition files.
+	commands used:
+	man locale
+
+11. 
+	downcase-dwim 
+	downcase-region
+	downcase-word
+	commands used: C-h a downcase
+ 
+12.
+	C-M-r: isearch-backward-regexp 
+	C-M-s: isearch-forward-regexp
+	C-M-t: transpose-sexps
+	C-M-u: backward-up-list	
+	C-M-v: scroll-other-window
+	commands used: C-h c
+ 
+13.
+	C-g: keyboard-quit
+	keyboard-quit signals a 'quit' condition
+	commands used: 
+	C-h c C-g
+	C-h a keyboard-quit
+ 
+14.
+	yank function is equivalent to paste, 
+	or to reinsert the last stretch of killed text
+	Invoked with C-y
+	commands used: C-h f yank
+ 
+15.
+	ls -l only displays long info about the directory's contents. ls -l does not print hidden  files.
+	dired can edit the directory listing as text. dired prints hidden files.
+	commands used: 
+	C-h a dired
+	C-x d [directory]

@@ -1,0 +1,28 @@
+03/03/20
+Haley Kim
+CS35L
+Section 8
+Assignment 7
+
+1. ran "git checkout -b quote v3.0", creating new branch quote and go into it
+2. ran "patch -p1 <quote-3.0-patch.txt", applying our patch
+3. used emacs on the 6 changed files and used add-change-log-entry-other-window on them
+4. committed these changes by using "git add ." and "git commit -F ChangeLog"
+5. ran "git format-patch --stdout -1 > formatted-patch.txt", generating a formatted patchfile
+6. used my own patch using "git am"
+7. rebuilt to check it works:
+
+   ./bootstrap
+   ./configure
+   make
+   make check
+
+8. ran "make distdir", verifying my ChangeLog works
+9. ran "nano diffutils-3.0.1-3b1be/ChangeLog" to inspect the diffutils*/ChangeLog file, first message is mine, the ChangeLog worked
+10. i used the following commands:
+
+     ssh -X seungwon@lnxsrv10.seas.ucla.edu
+     export PATH=/usr/local/cs/bin:$PATH
+     cd ~eggert/src/gnu/emacs
+     gitk
+     **window pops up**

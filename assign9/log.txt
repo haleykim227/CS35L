@@ -1,0 +1,19 @@
+Haley Kim
+405111152
+CS35L
+Section 8
+Assignment 9
+
+Lab Log
+
+1. confirmed .ssh file existed.
+2. ran "ssh-keygen" to generate private and public keys
+3. made a file authorized_keys and put the contents of public key into authorized_keys by running "cat id_rsa.pub >> authorized_keys
+4. ssh -i id_rsa seungwon@lnxsrv09.seas.ucla.edu
+5. asked for passphrase, entered passphrase
+6. wanted to make it so that I don't need to type in a key
+7. ran "eval `ssh-agent`"
+8. ran "ssh-add id_rsa"
+9. logged in with "ssh lnxsrv09.seas.ucla.edu"
+10. used "ssh -Y lnxsrv09.seas.ucla.edu", treating lnxsrv09 as a trusted client, aware that other machines could pick up my data
+11. did multihop (daisy-chain) by running "ssh -A -t lnxsrv07.seas.ucla.edu ssh -A -t lnxsrv10.seas.ucla.edu" and logged in at once

@@ -1,0 +1,105 @@
+Haley Kim
+405111152
+Section 5 TA: Tyler Davis
+Assignment 2
+
+* numbered = command used
+** dashed = comment
+
+- locale command revealed type is not C or POSTIX
+
+1. export LC_ALL='C'
+- now outputs LC_CTYPE="C"
+
+2. touch ~/CS35L/assign2/words
+- created a file named "words" in ~/CS35L/assign2/
+
+3. sort /usr/share/dict/words > ~/CS35L/assign2/words
+- sorted the contents of /usr/share/dict/words and placed them in the empty file "words"
+
+4. wget http://web.cs.ucla.edu/classes/fall19/cs35L/assign/assign2.html
+- downloaded the contents of the website describing this assignment
+
+5. tr -c 'A-Za-z' '[\n*]' < assign2.html
+- SET1 is all alpha characters
+- SET2 is newline
+- -c uses the complement of SET1
+- all occurences of a non-alpha character is replaced by a newline
+
+6. tr -cs 'A-Za-z' '[\n*]' < assign2.html
+- same options and inputs as the previous command
+- only diff is the added -s flag
+- -s ignores repeats
+- same output as previous command except now there are no multiple newlines
+
+7. tr -cs 'A-Za-z' '[\n*]' < assign2.html | sort
+- same output as previous command with no extra newlines
+- output from tr command is used as input for sort command
+- sort command sorts the input alphabetically and outputs to stdout
+- final output is alphabetically sorted
+
+8.tr -cs 'A-Za-z' '[\n*]' < assign2.html | sort -u
+- -u stands for unique
+- same output as previous command with no repeated words
+
+9. tr -cs 'A-Za-z' '[\n*]' < assign2.html | sort -u | comm - words
+- uses output from previous command as input to comm command
+- comm compares two sorted files line by line
+- final output has 3 columns: words in HTML, words in file words, words in common
+
+10. tr -cs 'A-Za-z' '[\n*]' < assign2.html | sort -u | comm -23 - words
+- #ENGLISHCHECKER
+- -2 suppresses column 2
+- -3 suppresses column 3
+- -23 suppresses both columns 2 and 3
+- final output only displays words listed in assign2.html
+
+11. wget https://www.mauimapp.com/moolelo/hwnwdshw.htm
+- downloads HTML content of website with both Hawaiian and English words listed
+
+12. buildword script
+- #! /bin/sh
+- # remove anything before the table
+- sed '/<!DOCTYPE/,/<\/font><\/td>/d' |
+- # remove anything after the table                                                      - sed '/<\/table>/,/<\/html>/d' |
+- # remove english words                                                                 - sed '/<tr>/,/<\/td>/d'|
+- # remove carriage returns                                                              - tr -d '\r\n' |
+- # translate upper case letters to lower case letters                                   - tr '[:upper:]' '[:lower:]' |
+- # replace </td> with new line character (nlc)                                          - sed 's/<\/td>/\n/g' |
+- # replace comma with nlc                                                               - sed 's/\,/\n/g' |
+- # replace ` with '                                                                     - sed s/\`/\'/g |
+- # delete any html stuff                                                                - sed 's/<[^>]*>//g' |
+- # separate words in a sentence                                                         - sed 's/ /\n/g' |
+- # delete any left-over spaces                                                          - tr -d '[:blank:]' |
+- # transform illformed haiwaiian words                                                  - sed '/-/d' |
+- # remove any misspelled haiwaiin language                                              - tr -cs "pk\'mnwlhaeiou<" '[\n*]' |
+- # sort the dictionary and remove duplicates
+- sort -u |
+- # remove the empty lines                                                               - sed '/^$/d'
+
+13. cat hwnwdshw.htm | ./buildwords > hwords
+- create hwords file based on hwnwdshw.htm
+
+14. cat assign2.html | tr -cs 'A-Za-z' '[\n*]' | sort -u | comm -23 - words > misEnglish
+- wc -l misEnglish reveals this file has 94 lines
+- inspecting the file, there is an empty line at the top
+- there are 93 misspelled English words
+- no need to turn everything in assign2.html to lowercase because words has uppercase letters in them as well
+
+15. cat assign2.html |  tr -cs ‘A-Za-z’ '[\n*]' | tr '[:upper:]' '[:lower:]' | sort -u | comm -23 - hwords > misHawaiian
+- wc -l misHawaiian reveals this file has 533 lines
+- inspecting the file, there are 4 empty lines at the top
+- there are 529 misspelled Hawaiian words
+- turning everything into lowercase as according to the spec
+
+16. cat misEnglish | tr -cs ‘A-Za-z’ '[\n*]' | sort -u | comm -12 - hwords > engButNotHaw
+- wc -l engButNotHaw reveals this file has 1 line
+- inspecting the file, there are no empty lines
+- there is 1 word that is misspelled in English but not misspelled in Hawaiian
+- the word is "wiki"
+
+17. cat misHawaiian |  tr -cs 'A-Za-z' '[\n*]' | sort -u | comm -12 - words > hawButNotEng
+- wc -l hawButNotEng reveals this file has 498 lines
+- inspecting the file, there are no empty lines
+- there are 498 words that are misspelled in Hawaiian but not misspelled in English
+- two examples are able "about" and "able"

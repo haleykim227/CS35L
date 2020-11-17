@@ -1,0 +1,111 @@
+03/03/20
+Haley Kim
+CS35L
+Section 8
+Assignment 7
+
+1. ran "git clone https://git.savannah.gnu.org/git/diffutils.git" to copy it from the main repository
+2. navigated into diffutils folder
+3. ran "git log > ../git-log.txt"
+4. ran "git tag > ../git-tag.txt"
+5. ran "git log --grep="maint: quote""
+
+ commit 62ca21c8c1a5aa3488589dcb191a4ef04ae9ed4f
+   Author: Paul Eggert <eggert@cs.ucla.edu>
+   Date:   Wed Jan 25 23:46:16 2012 -0800
+
+   	maint: quote 'like this' or "like this", not `like this'
+    
+	This is in response to a recent change in the GNU coding standards,
+	which now suggest quoting 'like this' or "like this", instead of
+    	`like this' or ``like this''.
+    	* HACKING, NEWS, README, README-hacking, TODO, doc/diagmeet.note:
+    	* doc/diffutils.texi, ms/config.bat, ms/config.site:
+    	* src/analyze.c, src/cmp.c, src/context.c, src/diff.c:
+    	* src/diff.h, src/diff3.c, src/dir.c, src/ifdef.c, src/io.c:
+    	* src/sdiff.c, src/side.c, src/system.h, src/util.c:
+    	* tests/help-version:
+    	Quote 'like this' or "like this" in commentary.
+    	* cfg.mk (old_NEWS_hash): Adjust to reflect new NEWS quoting.
+    	* man/help2man: Update to 1.40.4 version, with quoting fixed as above.
+    	* po/en.po: Remove translation involving `, as it's no longer needed.
+    	* src/cmp.c (try_help, specify_ignore_initial, usage, main):
+    	* src/diff.c (main, try_help, option_help_msgid, specify_value)
+    	(compare_files):
+    	* src/diff3.c (main, try_help, option_help_msgid, usage)
+    	(read_diff):
+    	* src/dir.c (compare_names):
+    	* src/sdiff.c (try_help, usage, check_child_status, main):
+    	* src/util.c (finish_output):
+    	* tests/help-version:
+    	Quote 'like this' in output.
+
+6. ran "git show 62ca21c8c1a5aa3488589dcb191a4ef04ae9ed4f > quote-patch.txt" to generate the patch
+7. ran "git checkout v3.0", switching branches
+8. ran "patch -p1 < quote-patch.txt", applied the patch (faced some errors, some hunks failed)
+9. ran "git status" to check how we're doing
+
+# Changed but not updated:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#	modified:   NEWS
+#	modified:   README
+#	modified:   TODO
+#	modified:   doc/diagmeet.note
+#	modified:   ms/config.bat
+#	modified:   ms/config.site
+#	modified:   po/en.po
+#	modified:   src/analyze.c
+#	modified:   src/cmp.c
+#	modified:   src/context.c
+#	modified:   src/diff.c
+#	modified:   src/diff.h
+#	modified:   src/diff3.c
+#	modified:   src/dir.c
+#	modified:   src/ifdef.c
+#	modified:   src/io.c
+#	modified:   src/sdiff.c
+#	modified:   src/side.c
+#	modified:   src/system.h
+#	modified:   src/util.c
+#	modified:   tests/help-version
+
+10. learned how to use vc-diff, vc-revert, diff-apply-hunk, and diff-goto-source functions
+11. opened the files from the git status report that did not have a .c extension and used vc-revert (said files: NEWS, README, TODO, doc/diagmeet.note, ms/config.bat, ms/config.site, po/en.po, diff.h, system.h, tests/help-version)
+12. for files with a .c extension, did the following:
+
+    open them: emacs src/*.c
+    open vc-diff buffer: C-x v
+    see what the change was: C-c C-c
+    switch back to vc-diff: C-x 5 b
+    revert hunk all the changes: C-u C-c C-a
+
+13. ran "ls src/*.c.rej", finding the files rejected by patch, found: src/diff3.c.rej, src/diff.c.rej
+14. used emacs on each rejected file and made changes using: M-g-g, C-x s
+15. ran "git clean -f", removing untracked files
+16. ran "git status" to check if there were half a dozen
+
+# Changed but not updated:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#	modified:   src/cmp.c
+#	modified:   src/diff.c
+#	modified:   src/diff3.c
+#	modified:   src/dir.c
+#	modified:   src/sdiff.c
+#	modified:   src/util.c
+
+17. ran "git diff > quote-3.0-patch.txt" to generate new patch
+18. followed instructions from README-hacking:
+
+    ./bootstrap
+    ./configure
+    make
+    make check
+
+19. ran "diff . -" and "diff --help", only output is '' not ``
+20. followed the instructions on number 14 to reclone, put the two different source codes into diffutils-3.0 and diffutils-3.0-patch and ran the diff implementations using "diff -pru diffutils-3.0 diffutils-3.0-patch >quote-3.0-test.txt"
+21. ran "diff quote-3.0-test.txt quote-3.0-patch.txt", all the differences to do with '' and `` have no actual effect on the diff functionality
+    

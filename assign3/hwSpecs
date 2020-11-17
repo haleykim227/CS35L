@@ -1,0 +1,41 @@
+Content-Type: text/enriched
+Text-Width: 70
+
+Haley Kim
+405111152
+CS35L
+Section 5
+HW Specs
+
+- Answer questions:
+  	 Q3. What happens when this script is invoked on an empty file like /dev/null, and why?
+
+	 Q4. What happens when this script is invoked with Python 3 rather than Python 2, and why?
+
+- write a new script shuf.py in the style of randline.py but using Python 3 instead
+
+  	script should implement <bold>shuf </bold>command
+
+- you want a python version of <bold>shuf
+
+</bold>- should support options including:
+
+  	should support --input-range (-i), --head-count (-n), --repeat (-r), and --help
+
+	if --repeat (-r) is used without --head-count (-n), your program should run forever
+
+	should support zero non-option arguments or a single non-option argument "-"
+
+	should support single non-option argument other than "-"
+
+	need not support the other options of GNU shuf
+
+	should report an error if given invalid arguments
+
+- your shuf.py program should not import any modules other than argparse, string and the modules that randline.py already imports
+
+- change its usage message to accurately describe the modified behavior
+
+- Answer question:
+
+  	 Q5. What happens when your shuf.py script is invoked with Python 2 rather than Python 3, and why?

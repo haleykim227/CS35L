@@ -1,0 +1,14 @@
+--- coreutils-with-bug/lib/timespec.h	2020-02-08 14:06:38.276333000 -0800
++++ timespec.h	2020-02-08 14:22:52.010346000 -0800
+@@ -45,8 +45,9 @@
+ static inline int
+ timespec_cmp (struct timespec a, struct timespec b)
+ {
+-  int diff = a.tv_sec - b.tv_sec;
+-  return diff ? diff : a.tv_nsec - b.tv_nsec;
++  return a.tv_sec > b.tv_sec ? 1 : (a.tv_sec < b.tv_sec ?
++                                    -1 : a.tv_nsec - b.tv_nsec);
++
+ }
+ 
+ # if ! HAVE_DECL_NANOSLEEP

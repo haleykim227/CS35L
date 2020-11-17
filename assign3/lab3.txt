@@ -1,0 +1,77 @@
+Content-Type: text/enriched
+Text-Width: 70
+
+Haley Kim
+405111152
+CS35L
+Section 5
+Assignment 3
+
+Lab 3 Log
+
+
+1. verified that bug exists with <bold>ls -a -A</bold> (ran ls -a -A on Linux Server)
+2. verified that Coreutils is version 8.22 (ran <bold>/usr/bin/ls --version</bold>)
+3. downloaded new Coreutils into ~/CS35L/temp
+4. unzipped new Coreutils with<bold> tar -xvJf</bold>
+5. verified that coreutils tar.xz we downloaded has good signature with command <bold>gpg --verify --keyring ./gnu-keyring.gpg coreutils-8.29.tar.xz</bold>
+6. however, <bold>gpg --verify --keyring ./gnu-keyring.gpg coreutils-8.29.tar.xz</bold>.sig command displays the follwing warning:
+	    This key is not certified with a trusted signature!
+	    There is no indication that the signature belongs to the owner.
+7. this indicates that the file could have been signed by anybody and that person is not someone I have verified or has been signed by someone I trust
+8. configured makefile using <bold>./configure --prefix=/u/cs/ugrad/seungwon/coreutilsInstall</bold> (created ~/coreutilsInstall directory before)<bold>.
+
+</bold>9.<bold><x-bg-color><param>unspecified-bg</param><x-color><param>unspecified-fg</param> </x-color></x-bg-color></bold>ran<bold><x-bg-color><param>unspecified-bg</param><x-color><param>unspecified-fg</param> make
+
+</x-color></x-bg-color></bold>10. ran<bold><x-bg-color><param>unspecified-bg</param><x-color><param>unspecified-fg</param> make install
+
+</x-color></x-bg-color></bold>11. no problems recorded<bold><x-bg-color><param>unspecified-bg</param><x-color><param>unspecified-fg</param>
+
+</x-color></x-bg-color></bold>12. reproducing the bug in<bold><x-bg-color><param>unspecified-bg</param><x-color><param>unspecified-fg</param> ~/coreutilsInstall/bin </x-color></x-bg-color></bold>by running<bold><x-bg-color><param>unspecified-bg</param><x-color><param>unspecified-fg</param> ./ls -aA
+
+	    </x-color></x-bg-color></bold>dots are present in output<bold><x-bg-color><param>unspecified-bg</param><x-color><param>unspecified-fg</param>
+
+</x-color></x-bg-color></bold>13. copied and pasted the patch from message #10 into a new file named patch_file<bold><x-bg-color><param>unspecified-bg</param><x-color><param>unspecified-fg</param><bold>
+
+</bold></x-color></x-bg-color></bold>14.<bold><x-bg-color><param>unspecified-bg</param><x-color><param>unspecified-fg</param> <bold>patch -p1 << patch_file
+
+</bold></x-color></x-bg-color></bold>15. error message:<bold><x-bg-color><param>unspecified-bg</param><x-color><param>unspecified-fg</param>
+
+	  </x-color></x-bg-color></bold>patching file NEWS
+	  Hunk #1 FAILED at 4.
+	  1 out of 1 hunk FAILED -- saving rejects to file NEWS.rej
+	  patching file src/ls.c
+	  Hunk #1 FAILED at 1903.
+	  1 out of 1 hunk FAILED -- saving rejects to file src/ls.c.rej
+	  patching file tests/local.mk
+	  patching file tests/ls/a-option.sh
+	  patch unexpectedly ends in middle of line<bold>
+
+</bold>16. the problem seems to be my custom emacs settings messing with the whitespace in my .emacs file<bold>
+
+</bold>17. once I commented out those settings,<bold> <bold>patch -p1 << patch_file</bold> </bold>works<bold>
+
+</bold>18. output:<bold>
+
+	</bold>patching file NEWS
+	Hunk #1 FAILED at 4.
+	1 out of 1 hunk FAILED -- saving rejects to file NEWS.rej
+	patching file src/ls.c
+	Hunk #1 succeeded at 1900 (offset -3 lines).
+	patching file tests/local.mk
+	patching file tests/ls/a-option.sh<bold>
+
+</bold>19. patching<bold> src/ls.c </bold>was all we needed<bold>
+
+</bold>20. the<bold> <bold>-p1</bold> </bold>flag was necessary to cut out the leading<bold> / </bold>in the diff file<bold>
+
+</bold>21.<bold> <bold>make</bold></bold> fails to run after applying patch<bold><bold>
+
+<x-bg-color><param>unspecified-bg</param><x-color><param>unspecified-fg</param>22.<bold> automake -fi</bold>, short for <bold>automake --force --install,</bold> successfully reconfigures coreutils-8.29
+
+23. <bold>make</bold> runs successfully (did not run <bold>make install</bold>)
+
+24. tested out the patch by running ./ls -aA in the src file</x-color></x-bg-color>
+<x-bg-color><param>unspecified-bg</param><x-color><param>unspecified-fg</param>25. . and .. does not show up
+
+</x-color></x-bg-color></bold></bold>

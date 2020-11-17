@@ -1,0 +1,69 @@
+#!/usr/bin/bash
+
+recursive=false
+dir=""
+
+if [ "$#" -gt 0 ]
+then
+    if [ "$1" == "-r" ]
+    then
+        recursive=true
+        shift
+    fi
+fi
+
+if [ "$#" -eq 0 ]
+then
+    dir="."
+elif [ "$#" -eq 1 ]
+then
+    dir="$1"
+    if [ "${dir:0:1}" == "-" ]
+    then
+        >&2 echo "poornames: Invalid option argument."
+        exit 1
+    elif [ -L "$dir" ] || ! [ -d "$dir" ]
+    then
+        >&2 echo "poornames: Not a directory."
+        exit 1
+#    elif ! [ -r "$dir" ]
+ #   then
+  #      >&2 echo "poornames: No read permissions."
+    fi
+else
+    if [ "$2" == "-r" ]
+    then
+        >&2 echo "poornames: -r comes before the directory name."
+    else 
+        >&2 echo "poornames: More than one argument."
+    fi
+    exit 1
+fi
+
+poornames () {
+    if ! [ -r "$1" ]
+    then
+        >&2 echo "poornames: No read permissions."
+    else   
+        find "$1" -mindepth 1 -maxdepth 1 -type f | grep -E "^$1/(.{15}|\.\.?.*|\-.*|.*[^A-Za-z._])"
+        find "$1" -mindepth 1 -maxdepth 1 -type d | grep -E "^$1/(.{15}|\.\.?.*|\-.*|.*[^A-Za-z._-])" | sed 's/$/\//g'
+        find "$1" -mindepth 1 -maxdepth 1 | grep -E -v "^$1/(.{15}|\.\.?.*|\-.*|.*[^A-Za-z._-])" | sort -f | uniq -d -i
+    
+        #$1 = true means recursive
+        if [ "$#" -eq 2 ] && [ "$2" = true ]
+        then
+            directories="$(find "$1" -mindepth 1 -maxdepth 1 -type d)"
+            for directory in $directories
+            do
+                poornames "$directory" true
+            done 
+        fi
+    fi
+}
+
+if [ "$recursive" = true ]
+then
+    poornames "$dir" true
+else
+    poornames "$dir"
+fi
